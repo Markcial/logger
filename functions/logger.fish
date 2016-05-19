@@ -16,10 +16,10 @@ function cprintf
     set -l color
     for a in $text
       if echo $a | grep -qE '^fg:.+$'
-        set color (echo $a | grep -E '^fg:.+$' | cut -d: -f 2)
+        set color (echo $a | grep -E '^fg:.+$' | cut -d: -f 2)
         set_color $color
-      else if echo $a | grep -qE '^bg:.+$'
-        set color (echo $a | grep -E '^bg:.+$' | cut -d: -f 2)
+      else if echo $a | grep -qºE '^bg:.+$'
+        set color (echo $a | grep -E '^bg:.+$' | cut -d: -f 2)
         set_color -b $color
       else if echo $a | grep -qE '^/(fg|bg)$'
         set_color normal
