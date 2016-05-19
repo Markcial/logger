@@ -13,12 +13,15 @@ function cprintf
     set -e argv[1]
   end
   set -l pieces (
+    set -l color
     for a in $text
-      if set -l color (echo $a | grep -oP '(?<=^fg:)[^\s]+(?=$)')
+      if echo $a | grep -qE '^fg:.+$'
+        set color (echo $a | grep -E '^fg:.+$' | cut -d: -f 2)
         set_color $color
-      else if set -l color (echo $a | grep -oP '(?<=^bg:)[^\s]+(?=$)')
+      else if echo $a | grep -qE '^bg:.+$'
+        set color (echo $a | grep -E '^bg:.+$' | cut -d: -f 2)
         set_color -b $color
-      else if echo $a | grep -oqP '^/(fg|bg)$'
+      else if echo $a | grep -qE '^/(fg|bg)$'
         set_color normal
       else
         echo -n $a
