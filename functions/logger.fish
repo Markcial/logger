@@ -6,31 +6,6 @@ set -g __log_format_CRITICAL "<bg:red><fg:white>%s</fg></bg> <fg:purple>[%s]</fg
 set -g __log_severities_labels "DEBUG" "WARN" "ERROR" "FATAL" "CRITICAL"
 set -g __log_severities 1 2 3 4 5
 
-
-function cprintf
-  set -l text (echo $argv[1] | awk -F "[<|>]" '{ for(i=1;i<=NF;i++){print $i} }')
-  if set -q argv[1]
-    set -e argv[1]
-  end
-  set -l pieces (
-    set -l color
-    for a in $text
-      if echo $a | grep -qE '^fg:.+$'
-        set color (echo $a | grep -E '^fg:.+$' | cut -d: -f 2)
-        set_color $color
-      else if echo $a | grep -qE '^bg:.+$'
-        set color (echo $a | grep -E '^bg:.+$' | cut -d: -f 2)
-        set_color -b $color
-      else if echo $a | grep -qE '^/(fg|bg)$'
-        set_color normal
-      else
-        echo -n $a
-      end
-    end
-  )
-  printf "$pieces"\n $argv
-end
-
 function log -a message -a severity -d "Empower your log capabilities to the maximum level"
   set -l label
   set -l format
